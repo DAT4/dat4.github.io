@@ -1,5 +1,5 @@
 ---
-title: "Install SMTP server on Debian"
+title: "Install SMTP server on Debian 11"
 date: 2023-03-13T22:36:18+01:00
 ---
 
@@ -121,3 +121,42 @@ smtpd_sender_restrictions = check_sender_access regexp:/etc/postfix/allowed_send
 ```
 
 Now the server will throw an error whenever someone uses another email address than the allowed one in the `MAIL FROM` field.
+
+
+# Some hacks
+
+By default you can only send emails from localhost - I have not figures out how to properly set this up. But a quick hack is to remoteforward port 25 with SSH. Then postfix will always think that you are sending from localhost.
+
+```
+# apt install open-ssh
+# systemctl enable ssh --now
+# ssh -R 2525:localhost:25 localhost
+```
+
+You can make a system service so that this always happens
+
+create this file `/etc/systemd/system/smtphack.service`
+```
+[Unit]
+Description=SSH remote forward SMTP server hack
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ssh -NT -o ExitOnForwardFailure=yes -o ServerAliveInterval=60 -R 2525:localhost:25 localhost
+RestartSec=5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+# systemctl daemon-reload
+# systemctl enable smtphack --now
+```
+
+
+
+
+
