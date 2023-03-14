@@ -1,0 +1,39 @@
+baseURL: 'http://dat4.github.io/'
+languageCode: 'en-us'
+title: 'Martin Maartensson'
+theme: 'papermod'
+
+params:
+  profileMode:
+    enabled: true 
+    title: Martin Maartensson
+    subtitle: Collection of things I have learnt
+    imageUrl: /images/img.jpg
+    imageWidth: 200
+    imageHeight: 240
+    imageTitle: my image
+    buttons:
+      - name: Posts
+        url: posts
+
+  socialIcons:
+    - name: stackoverflow
+      url: "https://stackoverflow.com"
+    - name: github
+      url: "https://github.com/"
+
+menu:
+  main:
+    - identifier: git
+      name: git
+      url: https://github.com
+      weight: 20
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+
+pygmentsUseClasses: true
+markup:
+  highlight:
+    noClasses: false
